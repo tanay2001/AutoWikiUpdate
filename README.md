@@ -75,7 +75,7 @@ for file in "$CRITERIA_DIR"/*.json; do
         --time_delta "$td" \
 ```
 
-Finally we can now run the wikipedia editor to incorporate the new information in the wikipedia article.
+Finally we can now run the wikipedia editor to incorporate the new information in the wikipedia article. The `use_trained_model` flag enables the fine-tuned editor to be used for editing wikipedia, we also support using a prompted LLM for editing - pass the corresponding model in `model` flag
 ```bash
 cd agent
 export WORLD_SIZE=2
@@ -101,11 +101,11 @@ for file in "$CRITERIA_DIR"/*.json; do
     # Incorporate the news updates into the sections
     echo "Integrating content for file: $file"
     python3 integrate_content_gpt.py \
-        --model gpt-4.1-2025-04-14 \
-        --trained_model_path $TRAINED_MODEL_PATH \
+        --model gpt-4.1-2025-04-14 \ # if use_trained_model not set, this model will be used
+        --trained_model_path $TRAINED_MODEL_PATH \ # fine-tuned editor model
         --news_data_file "$NEWS_UPDATES_DIR/updates_$base" \
         --out_dir "$UPDATED_CONTENT_DIR" \
-        --use_trained_model
+        --use_trained_model  # uses the fine-tuned editor
 ```
 
 Alternatively we also provide a script to run all the modules together `run.sh`. Feel free to modify the CONSTANTS in the script.
